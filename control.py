@@ -19,7 +19,7 @@ def register():
                 db.session.add(new_member)
             db.session.commit()
         except:
-            print("catch error")
+            print("this username was alredy registerd")
             check_error = True
 
     return {"check_error" : check_error}
