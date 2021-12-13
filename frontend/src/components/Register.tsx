@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import TextForm from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import axios from "axios";
+import { UserNameContext } from "../provider/UserNameContext";
 
 export const Register = () => {
-  const [userName, setUserName] = useState<string>("");
+  const { userName, setUserName } = useContext(UserNameContext);
   const [password, setPassword] = useState<string>("");
   const [checkError, setCheckError] = useState<boolean>(false);
 
