@@ -1,12 +1,16 @@
-import React from "react";
-import logo from "./logo.svg";
+import React, { useState } from "react";
 import "./App.css";
 import { Router } from "./router/Router";
+import { UserNameContext } from "./provider/UserNameContext";
+
 
 export const App = () => {
+  const [userName, setUserName] = useState("");
   return (
     <>
-      <Router />
+      <UserNameContext.Provider value={{ userName, setUserName }}>
+        <Router />
+      </UserNameContext.Provider>
     </>
   );
 };
