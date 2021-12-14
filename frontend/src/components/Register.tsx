@@ -1,4 +1,5 @@
 import React, { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import TextForm from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import axios from "axios";
@@ -9,6 +10,8 @@ export const Register = () => {
   const [password, setPassword] = useState<string>("");
   const [checkError, setCheckError] = useState<boolean>(false);
 
+  const navigate = useNavigate();
+
   const subumitUserData = (e: any) => {
     const data = {
       username: userName,
@@ -17,6 +20,7 @@ export const Register = () => {
     e.preventDefault();
     axios.post("/register", data).then((res) => {
       setCheckError(res.data.check_error);
+      navigate(res.data.select_root);
     });
   };
 
