@@ -12,6 +12,7 @@ def register():
         password = str(data["password"])
         print(username, password)
         check_error = False
+        select_root = "/timer"
 
         try:
             with db.session.begin(subtransactions=True):
@@ -21,8 +22,9 @@ def register():
         except:
             print("this username was alredy registerd")
             check_error = True
+            select_root = "/"
 
-    return {"check_error" : check_error}
+    return {"check_error" : check_error, "select_root" : select_root}
 
 @app.route("/login", methods=["POST"])
 def login():
@@ -31,6 +33,8 @@ def login():
         username = str(data["username"])
         password = str(data["password"])
         check_error = False
+        select_root = "/timer"
+
 
         name_list = [i.name for i in User.query.all()]
 
@@ -38,15 +42,17 @@ def login():
             for e in User.query.filter_by(name=username):
                 register_password = e.password
                 if password == register_password:
-                    pass
+                    select_root = "/timer"
                 else:
                     check_error = True
+                    select_root = "/"
                     print("password is not collect")
         else:
             print("this user name is not registerd")
             check_error = True
+            select_root = "/"
 
-    return {"check_error": check_error}
+    return {"check_error" : check_error, "select_root" : select_root}
 
 @app.route("/")
 def index():
