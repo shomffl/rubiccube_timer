@@ -1,4 +1,5 @@
 import React, { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import TextForm from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import axios from "axios";
@@ -8,7 +9,8 @@ export const Login = () => {
   const { userName, setUserName } = useContext(UserNameContext);
   const [password, setPassword] = useState<string>("");
   const [checkError, setCheckError] = useState<boolean>(false);
-  console.log(userName);
+
+  const navigate = useNavigate();
 
   const subumitUserData = (e: any) => {
     const data = {
@@ -17,7 +19,9 @@ export const Login = () => {
     };
     e.preventDefault();
     axios.post("/login", data).then((res) => {
+      console.log(res.data.text);
       setCheckError(res.data.check_error);
+      navigate(res.data.select_root);
     });
   };
 
@@ -38,10 +42,14 @@ export const Login = () => {
           }
         />
         <TextForm
+          error={checkError}
           name="password"
-          label="password"
+          label={checkError ? "Error" : "password"}
           type="password"
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(e) => {
+            setPassword(e.target.value);
+            setCheckError(false);
+          }}
         />
         <Button type="submit">Login</Button>
       </form>
