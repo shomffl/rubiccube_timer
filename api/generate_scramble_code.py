@@ -1,13 +1,14 @@
 from random import randint as rd
 
 
-rotation_code = [[["U","U'","U2"],["D","D'","D2"]],[["R","R'","R2"],["L","L'","L2"]],[["B","B'","B2"],["F","F'","F2"]]]
-cube_code = []
-random_code1 = []
-random_code2 = []
+rotation_code = [[["U ","U' ","U2 "],["D ","D' ","D2 "]],[["R ","R' ","R2 "],["L ","L' ","L2 "]],[["B ","B' ","B2 "],["F ","F' ","F2 "]]]
+
 
 # スクランブルコードを作成する
 def generate_scramble_code():
+    cube_code = []
+    random_code1 = []
+    random_code2 = []
     while True:
         code_num = len(cube_code)
 

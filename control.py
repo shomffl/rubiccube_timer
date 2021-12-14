@@ -1,6 +1,7 @@
 from flask import Flask, request
 from api.models.models import db, User, Time, AverageTime
 from app import app
+from api.generate_scramble_code import generate_scramble_code
 
 
 
@@ -53,6 +54,14 @@ def login():
             select_root = "/"
 
     return {"check_error" : check_error, "select_root" : select_root}
+
+
+@app.route("/get_code")
+def get_code():
+    code = generate_scramble_code()
+
+    return {"code": code}
+
 
 @app.route("/")
 def index():
