@@ -14,18 +14,20 @@ def register():
         print(username, password)
         check_error = False
         select_root = "/timer"
+        text = ""
 
         try:
             with db.session.begin(subtransactions=True):
                 new_member = User(username, password)
                 db.session.add(new_member)
             db.session.commit()
+            text = "you have successfully registered"
         except:
-            print("this username was alredy registerd")
+            text = "this username was already used"
             check_error = True
             select_root = "/"
 
-    return {"check_error" : check_error, "select_root" : select_root}
+    return {"check_error" : check_error, "select_root" : select_root, "text": text}
 
 @app.route("/login", methods=["POST"])
 def login():
@@ -35,6 +37,7 @@ def login():
         password = str(data["password"])
         check_error = False
         select_root = "/timer"
+        text = ""
 
 
         name_list = [i.name for i in User.query.all()]
@@ -44,16 +47,17 @@ def login():
                 register_password = e.password
                 if password == register_password:
                     select_root = "/timer"
+                    text = "The process was successful"
                 else:
                     check_error = True
                     select_root = "/"
-                    print("password is not collect")
+                    text = "password is not collect"
         else:
-            print("this user name is not registerd")
+            text = "this user name is not registerd"
             check_error = True
             select_root = "/"
 
-    return {"check_error" : check_error, "select_root" : select_root}
+    return {"check_error" : check_error, "select_root" : select_root, "text": text}
 
 
 @app.route("/get_code")

@@ -19,6 +19,7 @@ export const Register = () => {
     };
     e.preventDefault();
     axios.post("/register", data).then((res) => {
+      console.log(res.data.text);
       setCheckError(res.data.check_error);
       navigate(res.data.select_root);
     });

@@ -19,6 +19,7 @@ export const Login = () => {
     };
     e.preventDefault();
     axios.post("/login", data).then((res) => {
+      console.log(res.data.text);
       setCheckError(res.data.check_error);
       navigate(res.data.select_root);
     });
