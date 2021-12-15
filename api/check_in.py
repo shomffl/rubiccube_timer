@@ -1,40 +1,31 @@
 from api.models.models import db, User
 
-class Register:
+class CheckIn:
 
     def __init__(self, username, password):
         self.username = username
         self.password = password
 
-    def check_data(self):
-        check_error = False
-        select_root = "/timer"
-        text = ""
+        self.check_error = False
+        self.select_root = "/timer"
+        self.text = ""
+
+    def register(self):
 
         try:
             with db.session.begin(subtransactions=True):
                 new_member = User(self.username, self.password)
                 db.session.add(new_member)
             db.session.commit()
-            text = "you have successfully registered"
+            self.text = "you have successfully registered"
         except:
-            text = "this username was already used"
-            check_error = True
-            select_root = "/"
+            self.text = "this username was already used"
+            self.check_error = True
+            self.select_root = "/"
 
-        return(check_error, select_root, text)
+        return(self.check_error, self.select_root, self.text)
 
-class Login:
-
-    def __init__(self, username, password):
-        self.username = username
-        self.password = password
-
-    def check_data(self):
-        check_error = False
-        select_root = "/timer"
-        text = ""
-
+    def login(self):
 
         name_list = [i.name for i in User.query.all()]
 
@@ -42,15 +33,15 @@ class Login:
             for e in User.query.filter_by(name=self.username):
                 register_password = e.password
                 if self.password == register_password:
-                    select_root = "/timer"
-                    text = "The process was successful"
+                    self.select_root = "/timer"
+                    self.text = "The process was successful"
                 else:
-                    check_error = True
-                    select_root = "/"
-                    text = "password is not collect"
+                    self.check_error = True
+                    self.select_root = "/"
+                    self.text = "password is not collect"
         else:
-            text = "this user name is not registerd"
-            check_error = True
-            select_root = "/"
+            self.text = "this user name is not registerd"
+            self.check_error = True
+            self.select_root = "/"
 
-        return(check_error, select_root, text)
+        return(self.check_error, self.select_root, self.text)
