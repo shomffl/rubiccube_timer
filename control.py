@@ -2,7 +2,7 @@ from flask import Flask, request
 from api.models.models import db, User, Time, AverageTime
 from app import app
 from api.generate_scramble_code import generate_scramble_code
-from api.check_in import Register, Login
+from api.check_in import CheckIn
 
 
 
@@ -13,8 +13,8 @@ def register():
         username = str(data["username"])
         password = str(data["password"])
 
-        register = Register(username, password)
-        return_data = register.check_data()
+        register = CheckIn(username, password)
+        return_data = register.register()
 
     return {"check_error" : return_data[0], "select_root" : return_data[1], "text": return_data[2]}
 
@@ -25,8 +25,8 @@ def login():
         username = str(data["username"])
         password = str(data["password"])
 
-        login = Login(username, password)
-        return_data = login.check_data()
+        login = CheckIn(username, password)
+        return_data = login.login()
 
 
     return {"check_error" : return_data[0], "select_root" : return_data[1], "text": return_data[2]}
