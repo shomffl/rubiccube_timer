@@ -1,8 +1,10 @@
+from re import sub
 from flask import Flask, request
 from api.models.models import db, User, Time, AverageTime
 from app import app
 from api.generate_scramble_code import generate_scramble_code
 from api.check_in import CheckIn
+from datetime import datetime
 
 
 
@@ -37,6 +39,32 @@ def get_code():
     code = generate_scramble_code()
 
     return {"code": code}
+
+
+@app.route("/get_box_list", methods=["POST"])
+def get_box_list():
+    if request.method == "POST":
+        data = request.get_json()
+        username = str(data["username"])
+        box_list = [i.avg_id for i in AverageTime.query.filter_by(record_id=username)]
+
+    return {"box_list": box_list}
+
+@app.route("/create_box", methods=["POST"])
+def make_box():
+    if request.method == "POST":
+        data = request.get_json()
+        username = str(data["username"])
+        time = datetime.now()
+
+        with db.session.begin(subtransactions=True):
+            new_box = AverageTime(0, time, username)
+            db.session.add(new_box)
+        db.session.commit()
+
+        box_list = [i.avg_id for i in AverageTime.query.filter_by(record_id=username)]
+
+        return {"box_list": box_list}
 
 
 @app.route("/")

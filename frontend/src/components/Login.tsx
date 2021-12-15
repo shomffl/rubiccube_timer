@@ -22,6 +22,7 @@ export const Login = () => {
       console.log(res.data.text);
       setCheckError(res.data.check_error);
       navigate(res.data.select_root);
+      localStorage.setItem("username", userName);
     });
   };
 
