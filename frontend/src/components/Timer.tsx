@@ -2,13 +2,13 @@ import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { Stopwatch } from "./Stopwatch";
 import { UserNameContext } from "../provider/UserNameContext";
+import { BoxList } from "./BoxList";
 
 export const Timer = () => {
   const [scrambleCode, setScrambleCode] = useState<string>("");
   const [time, setTime] = useState<any>(0);
-  const [boxList, setBoxList] = useState<any[]>([]);
+  const [boxList, setBoxList] = useState<number[]>([]);
   const { userName } = useContext(UserNameContext);
-  console.log(userName);
 
   useEffect(() => {
     axios.get("/get_code").then((res) => {
@@ -26,7 +26,6 @@ export const Timer = () => {
 
   const onClickCreateBox = () => {
     const getUserName = localStorage.getItem("username");
-    console.log(getUserName);
     const data = { username: getUserName };
     axios.post("/create_box", data).then((res) => {
       setBoxList(res.data.box_list);
@@ -39,11 +38,7 @@ export const Timer = () => {
       <button onClick={onClickCreateBox}>create box</button>
       <Stopwatch time={time} setTime={setTime} />
 
-      <select>
-        {boxList.map((box) => (
-          <option key={box}>{box}</option>
-        ))}
-      </select>
+      <BoxList boxList={boxList} setBoxList={setBoxList} />
     </div>
   );
 };
