@@ -1,5 +1,6 @@
 import React, { useState, Dispatch, SetStateAction } from "react";
 
+
 export const Stopwatch: React.FC<{
   time: any;
   setTime: Dispatch<SetStateAction<any>>;
@@ -14,8 +15,8 @@ export const Stopwatch: React.FC<{
   const onClickStop = () => {
     const endTime = performance.now();
     const cul = (endTime - start) / 1000;
-    setTime(cul.toFixed(3));
-    console.log(typeof Number(time));
+    const format_cul = cul.toFixed(3);
+    setTime(format_cul);
   };
 
   return (

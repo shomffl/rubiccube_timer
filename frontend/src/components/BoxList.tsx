@@ -4,17 +4,18 @@ import axios from "axios";
 interface Props {
   boxList: number[];
   setBoxList: Dispatch<SetStateAction<number[]>>;
+  selectKey: string;
+  setSelectKey: Dispatch<SetStateAction<string>>;
 }
 
 export const BoxList: React.FC<Props> = (props) => {
-  const { boxList, setBoxList } = props;
-  const [deleteKey, setDeleteKey] = useState<any>("undefiend");
+  const { boxList, setBoxList, selectKey, setSelectKey } = props;
 
   const onClickDelete = (e: any) => {
-    console.log("key", deleteKey);
+    console.log("key", selectKey);
     const getUserName = localStorage.getItem("username");
     const data = {
-      deleteKey: deleteKey,
+      deleteKey: selectKey,
       username: getUserName,
     };
     axios.post("/delete_box", data).then((res) => {
@@ -25,7 +26,7 @@ export const BoxList: React.FC<Props> = (props) => {
     <>
       <select
         onChange={(e: any) => {
-          setDeleteKey(e.target.value);
+          setSelectKey(e.target.value);
         }}
       >
         {boxList.map((box, index) => (

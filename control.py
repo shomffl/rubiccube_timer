@@ -64,7 +64,7 @@ def make_box():
         box_list = [i.avg_id for i in AverageTime.query.filter_by(record_id=username)]
 
         return {"box_list": box_list}
-    
+
 
 @app.route("/delete_box", methods=["POST"])
 def delete_box():
@@ -79,6 +79,20 @@ def delete_box():
         box_list = [i.avg_id for i in AverageTime.query.filter_by(record_id=username)]
 
         return {"box_list" : box_list}
+
+
+@app.route("/add_time_data", methods=["POST"])
+def add_time():
+    if request.method == "POST":
+        data = request.get_json()
+        time = data["time"]
+        sc_code = data["scrambleCode"]
+        avg_id = data["averageID"]
+        print(time)
+        print(sc_code)
+        print(avg_id)
+
+        return {"none" : None}
 
 
 

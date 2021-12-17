@@ -6,8 +6,9 @@ import { BoxList } from "./BoxList";
 
 export const Timer = () => {
   const [scrambleCode, setScrambleCode] = useState<string>("");
-  const [time, setTime] = useState<any>(0);
+  const [time, setTime] = useState<string>("");
   const [boxList, setBoxList] = useState<number[]>([]);
+  const [selectKey, setSeleteKey] = useState<any>("undefiend");
   const { userName } = useContext(UserNameContext);
 
   useEffect(() => {
@@ -32,13 +33,28 @@ export const Timer = () => {
     });
   };
 
+  const onClickSend = () => {
+    const data = {
+      time: time,
+      scrambleCode: scrambleCode,
+      averageID: selectKey,
+    };
+    axios.post("/add_time_data", data);
+  };
+
   return (
     <div>
       <h1>{scrambleCode}</h1>
       <button onClick={onClickCreateBox}>create box</button>
       <Stopwatch time={time} setTime={setTime} />
+      <button onClick={onClickSend}>send</button>
 
-      <BoxList boxList={boxList} setBoxList={setBoxList} />
+      <BoxList
+        boxList={boxList}
+        setBoxList={setBoxList}
+        selectKey={selectKey}
+        setSelectKey={setSeleteKey}
+      />
     </div>
   );
 };
