@@ -47,7 +47,7 @@ def get_box_list():
     if request.method == "POST":
         data = request.get_json()
         username = str(data["username"])
-        box_list = [i.avg_id for i in AverageTime.query.filter_by(record_id=username)]
+        box_list = [[i.avg_id, i.avg_time] for i in AverageTime.query.filter_by(record_id=username)]
 
     return {"box_list": box_list}
 
