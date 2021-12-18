@@ -1,15 +1,14 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Stopwatch } from "./Stopwatch";
-import { UserNameContext } from "../provider/UserNameContext";
-import { BoxList } from "./BoxList";
 
 export const Timer = () => {
   const [scrambleCode, setScrambleCode] = useState<string>("");
   const [time, setTime] = useState<string>("");
-  const [boxList, setBoxList] = useState<number[]>([]);
   const [selectKey, setSeleteKey] = useState<any>("undefiend");
-  const { userName } = useContext(UserNameContext);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios.get("/get_code").then((res) => {
@@ -17,19 +16,10 @@ export const Timer = () => {
     });
   }, []);
 
-  useEffect(() => {
-    const getUserName = localStorage.getItem("username");
-    const data = { username: getUserName };
-    axios
-      .post("/get_box_list", data)
-      .then((res) => setBoxList(res.data.box_list));
-  }, []);
-
   const onClickCreateBox = () => {
     const getUserName = localStorage.getItem("username");
     const data = { username: getUserName };
     axios.post("/create_box", data).then((res) => {
-      setBoxList(res.data.box_list);
     });
   };
 
@@ -47,14 +37,7 @@ export const Timer = () => {
       <h1>{scrambleCode}</h1>
       <button onClick={onClickCreateBox}>create box</button>
       <Stopwatch time={time} setTime={setTime} />
-      <button onClick={onClickSend}>send</button>
-
-      <BoxList
-        boxList={boxList}
-        setBoxList={setBoxList}
-        selectKey={selectKey}
-        setSelectKey={setSeleteKey}
-      />
+      <button onClick={(e) => navigate("/box")}>send</button>
     </div>
   );
 };
