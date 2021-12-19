@@ -48,8 +48,9 @@ def get_box_list():
         data = request.get_json()
         username = str(data["username"])
         box_list = [[i.avg_id, i.avg_time] for i in AverageTime.query.filter_by(record_id=username)]
+        box_num = len(box_list)
 
-    return {"box_list": box_list}
+    return {"box_list": box_list, "box_num": box_num}
 
 @app.route("/create_box", methods=["POST"])
 def make_box():
@@ -65,7 +66,6 @@ def make_box():
 
         return {"box_list": box_list}
 
-
 @app.route("/delete_box", methods=["POST"])
 def delete_box():
     if request.method == "POST":
@@ -76,9 +76,12 @@ def delete_box():
         box = DeleteBox(delete_key, username)
         box.delete()
 
-        box_list = [i.avg_id for i in AverageTime.query.filter_by(record_id=username)]
+        box_list = [[i.avg_id, i.avg_time] for i in AverageTime.query.filter_by(record_id=username)]
+        box_num = len(box_list)
 
-        return {"box_list" : box_list}
+
+
+        return {"box_list" : box_list, "box_num": box_num}
 
 
 @app.route("/add_time_data", methods=["POST"])
