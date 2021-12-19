@@ -1,8 +1,11 @@
+from re import sub
 from flask import Flask, request
 from api.models.models import db, User, Time, AverageTime
 from app import app
 from api.generate_scramble_code import generate_scramble_code
 from api.check_in import CheckIn
+from api.cd_box import CreateBox, DeleteBox
+from datetime import datetime
 
 
 
@@ -37,6 +40,65 @@ def get_code():
     code = generate_scramble_code()
 
     return {"code": code}
+
+
+@app.route("/get_box_list", methods=["POST"])
+def get_box_list():
+    if request.method == "POST":
+        data = request.get_json()
+        username = str(data["username"])
+        box_list = [[i.avg_id, i.avg_time] for i in AverageTime.query.filter_by(record_id=username)]
+        box_num = len(box_list)
+
+    return {"box_list": box_list, "box_num": box_num}
+
+@app.route("/create_box", methods=["POST"])
+def make_box():
+    if request.method == "POST":
+        data = request.get_json()
+        username = str(data["username"])
+        time = datetime.now()
+
+        box = CreateBox(username, time)
+        box.create()
+
+        box_list = [[i.avg_id, i.avg_time] for i in AverageTime.query.filter_by(record_id=username)]
+        box_num = len(box_list)
+
+
+        return {"box_list": box_list, "box_num": box_num}
+
+@app.route("/delete_box", methods=["POST"])
+def delete_box():
+    if request.method == "POST":
+        data = request.get_json()
+        delete_key = data["deleteKey"]
+        username = str(data["username"])
+
+        box = DeleteBox(delete_key, username)
+        box.delete()
+
+        box_list = [[i.avg_id, i.avg_time] for i in AverageTime.query.filter_by(record_id=username)]
+        box_num = len(box_list)
+
+
+
+        return {"box_list" : box_list, "box_num": box_num}
+
+
+@app.route("/add_time_data", methods=["POST"])
+def add_time():
+    if request.method == "POST":
+        data = request.get_json()
+        time = data["time"]
+        sc_code = data["scrambleCode"]
+        avg_id = data["averageID"]
+        print(time)
+        print(sc_code)
+        print(avg_id)
+
+        return {"none" : None}
+
 
 
 @app.route("/")
