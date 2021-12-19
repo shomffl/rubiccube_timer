@@ -16,12 +16,7 @@ export const Timer = () => {
     });
   }, []);
 
-  const onClickCreateBox = () => {
-    const getUserName = localStorage.getItem("username");
-    const data = { username: getUserName };
-    axios.post("/create_box", data).then((res) => {
-    });
-  };
+
 
   const onClickSend = () => {
     const data = {
@@ -35,7 +30,6 @@ export const Timer = () => {
   return (
     <div>
       <h1>{scrambleCode}</h1>
-      <button onClick={onClickCreateBox}>create box</button>
       <Stopwatch time={time} setTime={setTime} />
       <button onClick={(e) => navigate("/box")}>send</button>
     </div>

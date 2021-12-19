@@ -17,6 +17,15 @@ export const BoxPage = () => {
     });
   }, []);
 
+  const onClickCreate = (e: any) => {
+    const getUserName = localStorage.getItem("username");
+    const data = { username: getUserName };
+    axios.post("/create_box", data).then((res) => {
+      setBoxList(res.data.box_list);
+      setBoolList([...Array(res.data.box_num)].map(() => true));
+    });
+  };
+
   const onClickDelete = (e: any) => {
     const getUserName = localStorage.getItem("username");
     const data = {
@@ -31,6 +40,7 @@ export const BoxPage = () => {
 
   return (
     <div>
+      <button onClick={onClickCreate}>create box</button>
       <button onClick={(e) => navigate("/timer")}>back</button>
       <table>
         <tbody>
@@ -43,6 +53,7 @@ export const BoxPage = () => {
                   onClick={(e) => {
                     setSelectKey(box[0]);
                     boolList[index] = false;
+                    localStorage.setItem("box_id", box[0]);
                   }}
                 >
                   選択
