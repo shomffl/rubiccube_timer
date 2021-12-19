@@ -7,7 +7,7 @@ class CheckIn:
         self.password = password
 
         self.check_error = False
-        self.select_root = "/timer"
+        self.select_root = "/box"
         self.text = ""
 
     def register(self):
@@ -33,7 +33,7 @@ class CheckIn:
             for e in User.query.filter_by(name=self.username):
                 register_password = e.password
                 if self.password == register_password:
-                    self.select_root = "/timer"
+                    self.select_root = "/box"
                     self.text = "The process was successful"
                 else:
                     self.check_error = True
