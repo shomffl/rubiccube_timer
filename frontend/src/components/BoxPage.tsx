@@ -6,6 +6,7 @@ export const BoxPage = () => {
   const [boxList, setBoxList] = useState<String[]>([]);
   const [selectKey, setSelectKey] = useState<String>();
   const [boolList, setBoolList] = useState<boolean[]>([]);
+  const [openGo, setOpenGo] = useState<boolean>(true);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -35,13 +36,16 @@ export const BoxPage = () => {
     axios.post("/delete_box", data).then((res) => {
       setBoxList(res.data.box_list);
       setBoolList([...Array(res.data.box_num)].map(() => true));
+      setOpenGo(true);
     });
   };
 
   return (
     <div>
       <button onClick={onClickCreate}>create box</button>
-      <button onClick={(e) => navigate("/timer")}>back</button>
+      <button onClick={(e) => navigate("/timer")} disabled={openGo}>
+        go
+      </button>
       <table>
         <tbody>
           {boxList.map((box, index) => (
@@ -54,6 +58,7 @@ export const BoxPage = () => {
                     setSelectKey(box[0]);
                     boolList[index] = false;
                     localStorage.setItem("box_id", box[0]);
+                    setOpenGo(false);
                   }}
                 >
                   選択

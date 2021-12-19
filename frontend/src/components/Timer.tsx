@@ -5,8 +5,9 @@ import { Stopwatch } from "./Stopwatch";
 
 export const Timer = () => {
   const [scrambleCode, setScrambleCode] = useState<string>("");
-  const [time, setTime] = useState<string>("");
+  const [time, setTime] = useState<string>("0000");
   const [selectKey, setSeleteKey] = useState<any>("undefiend");
+  console.log(localStorage.getItem("box_id"))
 
   const navigate = useNavigate();
 
@@ -31,7 +32,7 @@ export const Timer = () => {
     <div>
       <h1>{scrambleCode}</h1>
       <Stopwatch time={time} setTime={setTime} />
-      <button onClick={(e) => navigate("/box")}>send</button>
+      <button onClick={(e) => navigate("/box")}>back</button>
     </div>
   );
 };
