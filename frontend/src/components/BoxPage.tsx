@@ -8,34 +8,33 @@ export const BoxPage = () => {
   const [boolList, setBoolList] = useState<boolean[]>([]);
   const [openGo, setOpenGo] = useState<boolean>(true);
   const navigate = useNavigate();
+  const getUserName = localStorage.getItem("username");
+  const setData = (listName: any, listNum: any) => {
+    setBoxList(listName);
+    setBoolList([...Array(listNum)].map(() => true));
+  };
 
   useEffect(() => {
-    const getUserName = localStorage.getItem("username");
     const data = { username: getUserName };
     axios.post("/get_box_list", data).then((res) => {
-      setBoxList(res.data.box_list);
-      setBoolList([...Array(res.data.box_num)].map(() => true));
+      setData(res.data.box_list, res.data.box_num);
     });
   }, []);
 
   const onClickCreate = (e: any) => {
-    const getUserName = localStorage.getItem("username");
     const data = { username: getUserName };
     axios.post("/create_box", data).then((res) => {
-      setBoxList(res.data.box_list);
-      setBoolList([...Array(res.data.box_num)].map(() => true));
+      setData(res.data.box_list, res.data.box_num);
     });
   };
 
   const onClickDelete = (e: any) => {
-    const getUserName = localStorage.getItem("username");
     const data = {
       deleteKey: selectKey,
       username: getUserName,
     };
     axios.post("/delete_box", data).then((res) => {
-      setBoxList(res.data.box_list);
-      setBoolList([...Array(res.data.box_num)].map(() => true));
+      setData(res.data.box_list, res.data.box_num);
       setOpenGo(true);
     });
   };
