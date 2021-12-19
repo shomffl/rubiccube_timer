@@ -62,9 +62,11 @@ def make_box():
         box = CreateBox(username, time)
         box.create()
 
-        box_list = [i.avg_id for i in AverageTime.query.filter_by(record_id=username)]
+        box_list = [[i.avg_id, i.avg_time] for i in AverageTime.query.filter_by(record_id=username)]
+        box_num = len(box_list)
 
-        return {"box_list": box_list}
+
+        return {"box_list": box_list, "box_num": box_num}
 
 @app.route("/delete_box", methods=["POST"])
 def delete_box():
