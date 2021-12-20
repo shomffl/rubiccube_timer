@@ -1,10 +1,12 @@
 from re import sub
 from flask import Flask, request
+from api.add_time import AddTime
 from api.models.models import db, User, Time, AverageTime
 from app import app
 from api.generate_scramble_code import generate_scramble_code
 from api.check_in import CheckIn
 from api.cd_box import CreateBox, DeleteBox
+from api.add_time import AddTime
 from datetime import datetime
 
 
@@ -90,12 +92,11 @@ def delete_box():
 def add_time():
     if request.method == "POST":
         data = request.get_json()
-        time = data["time"]
-        sc_code = data["scrambleCode"]
+        time = float(data["time"])
+        sc_code = str(data["scrambleCode"])
         avg_id = data["averageID"]
-        print(time)
-        print(sc_code)
-        print(avg_id)
+        add_time = AddTime(time, sc_code, avg_id)
+        add_time.add()
 
         return {"none" : None}
 
