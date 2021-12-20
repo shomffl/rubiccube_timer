@@ -6,7 +6,7 @@ from app import app
 from api.generate_scramble_code import generate_scramble_code
 from api.check_in import CheckIn
 from api.cd_box import CreateBox, DeleteBox
-from api.add_time import AddTime
+from api.add_time import AddTime, UpdateTime
 from datetime import datetime
 
 
@@ -97,6 +97,8 @@ def add_time():
         avg_id = data["averageID"]
         add_time = AddTime(time, sc_code, avg_id)
         add_time.add()
+        update_time = UpdateTime(avg_id)
+        update_time.update()
 
         return {"none" : None}
 
